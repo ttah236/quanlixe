@@ -1,0 +1,18 @@
+{
+  "name": "vehicle-management-system",
+  "version": "1.0.0",
+  "description": "Vehicle Management System chuyển đổi từ C++ OOP sang Web Application chuẩn OOP ES6 & Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "vehicle-management",
+    "oop",
+    "cpp-to-web",
+    "polymorphism",
+    "vanilla-js"
+  ],
+  "author": "Senior Full-Stack Developer",
+  "license": "ISC"
+}

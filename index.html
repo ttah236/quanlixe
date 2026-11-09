@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Quản Lý Phương Tiện - Vehicle Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-title-wrap">
+        <span class="header-badge">OOP Web Architecture &bull; C++ to Full-Stack ES6</span>
+        <h1>HỆ THỐNG QUẢN LÝ PHƯƠNG TIỆN</h1>
+        <p>Quản lý đa hình xe hơi, xe tải, tính thuế tự động, sắp xếp và đồng bộ dữ liệu chuẩn tệp tin</p>
+      </div>
+    </header>
+
+    <!-- Stats Overview Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Tổng Phương Tiện</h3>
+          <div class="stat-value" id="stat-total-vehicles">0</div>
+        </div>
+        <div class="stat-icon icon-blue">📋</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Xe Hơi [CAR]</h3>
+          <div class="stat-value" id="stat-total-cars">0</div>
+        </div>
+        <div class="stat-icon icon-car">🚗</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Xe Tải [TRUCK]</h3>
+          <div class="stat-value" id="stat-total-trucks">0</div>
+        </div>
+        <div class="stat-icon icon-truck">🚚</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Tổng Nghĩa Vụ Thuế</h3>
+          <div class="stat-value" id="stat-total-tax">$0.00</div>
+        </div>
+        <div class="stat-icon icon-green">💵</div>
+      </div>
+    </section>
+
+    <!-- Main Workspace Card -->
+    <main class="main-card">
+      <!-- Control Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <!-- Add Buttons -->
+          <button class="btn btn-car" id="btn-open-add-car">
+            <span>+</span> Thêm Xe Hơi (Car)
+          </button>
+          <button class="btn btn-truck" id="btn-open-add-truck">
+            <span>+</span> Thêm Xe Tải (Truck)
+          </button>
+
+          <!-- Nested Sub-menu Sort Dropdown -->
+          <div class="dropdown" id="sort-dropdown">
+            <button class="btn btn-secondary dropdown-toggle" id="btn-sort-menu">
+              <span>⇅</span> Sắp Xếp Danh Sách <small>▼</small>
+            </button>
+            <ul class="dropdown-menu" id="sort-menu-items">
+              <li class="dropdown-header">Chọn tiêu chí sắp xếp (Sort Menu)</li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="1">
+                  <span>1. Theo Hãng xe (Make)</span>
+                  <span class="dropdown-item-badge">A &rarr; Z</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="2">
+                  <span>2. Theo Tốc độ tối đa</span>
+                  <span class="dropdown-item-badge">Giảm dần &darr;</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="3">
+                  <span>3. Theo Số cửa xe hơi</span>
+                  <span class="dropdown-item-badge">Giảm dần &darr;</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="4">
+                  <span>4. Theo Loại động cơ</span>
+                  <span class="dropdown-item-badge">A &rarr; Z</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-sort="5">
+                  <span>5. Theo Thuế nộp</span>
+                  <span class="dropdown-item-badge">Giảm dần &darr;</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <!-- Search Box -->
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Tìm xe theo Hãng (Make)..." autocomplete="off">
+            <button class="clear-search-btn" id="btn-clear-search">&times;</button>
+          </div>
+
+          <!-- File & Storage Actions Dropdown -->
+          <div class="dropdown" id="file-dropdown">
+            <button class="btn btn-outline dropdown-toggle" id="btn-file-menu">
+              <span>📁</span> Dữ Liệu & File <small>▼</small>
+            </button>
+            <ul class="dropdown-menu" id="file-menu-items">
+              <li class="dropdown-header">Quản lý tệp tin (C++ Matching)</li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-export-vehicles">
+                  <span>💾 Lưu vào file (vehicles.txt)</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-import-vehicles">
+                  <span>📂 Nạp từ file (vehicles.txt)</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-export-report">
+                  <span>📄 Xuất báo cáo (output.txt)</span>
+                </a>
+              </li>
+              <li class="dropdown-header">Trình duyệt LocalStorage</li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-save-local">
+                  <span>📥 Lưu vào LocalStorage</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-load-local">
+                  <span>📤 Nạp từ LocalStorage</span>
+                </a>
+              </li>
+              <li class="dropdown-header">Dữ liệu mẫu</li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-seed-sample">
+                  <span>⚡ Nạp dữ liệu mẫu ban đầu</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" id="action-clear-all" style="color: var(--danger);">
+                  <span>🗑️ Xóa toàn bộ danh sách</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Hidden File Input for uploading vehicles.txt -->
+          <input type="file" id="file-uploader" accept=".txt" style="display: none;">
+        </div>
+      </div>
+
+      <!-- Filter Notification Banner (if searching) -->
+      <div id="filter-banner" class="filter-info-bar" style="display: none;">
+        <span id="filter-text">Đang lọc theo hãng xe: "Toyota"</span>
+        <button class="btn btn-sm btn-secondary" id="btn-reset-filter">Xóa bộ lọc</button>
+      </div>
+
+      <!-- Table Container -->
+      <div class="table-responsive">
+        <table class="vehicle-table" id="vehicles-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">STT</th>
+              <th style="width: 100px;">LOẠI</th>
+              <th>HÃNG XE</th>
+              <th>DÒNG XE</th>
+              <th style="text-align: right;">TỐC ĐỘ</th>
+              <th>CỬA / TẢI TRỌNG</th>
+              <th>ĐỘNG CƠ / TRỤC</th>
+              <th style="text-align: right;">THUẾ</th>
+              <th style="width: 80px; text-align: center;">THAO TÁC</th>
+            </tr>
+          </thead>
+          <tbody id="vehicle-table-body">
+            <!-- Dynamic rows will be injected here -->
+          </tbody>
+        </table>
+
+        <!-- Empty state placeholder -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <div class="empty-state-icon">🚘</div>
+          <h4>Danh sách phương tiện hiện đang trống</h4>
+          <p>Thêm xe hơi hoặc xe tải mới, hoặc nạp dữ liệu mẫu để bắt đầu quản lý.</p>
+          <button class="btn btn-primary" id="btn-empty-seed">Nạp dữ liệu mẫu</button>
+        </div>
+      </div>
+
+      <!-- HIGHLIGHT BANNER NGAY BÊN DƯỚI BẢNG (Theo đúng yêu cầu C++ displayAll) -->
+      <div class="total-tax-banner" id="total-tax-banner">
+        <div class="total-tax-label">
+          <span>&gt;&gt;&gt;</span>
+          <span>TỔNG NGHĨA VỤ THUẾ TẤT CẢ PHƯƠNG TIỆN PHẢI NỘP:</span>
+        </div>
+        <div class="total-tax-amount" id="banner-total-tax">$0.00</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Thêm Xe Hơi (Car) -->
+  <div class="modal-overlay" id="modal-car">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🚗 Thêm Xe Hơi Mới (Add Car)</h3>
+        <button class="modal-close-btn" data-close="modal-car">&times;</button>
+      </div>
+      <form id="form-car">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="car-make">Hãng sản xuất (Make) *</label>
+            <input type="text" id="car-make" placeholder="Ví dụ: Toyota, Tesla, Porsche..." required>
+          </div>
+          <div class="form-group">
+            <label for="car-model">Dòng xe (Model) *</label>
+            <input type="text" id="car-model" placeholder="Ví dụ: Camry, Model 3, 911 Carrera..." required>
+          </div>
+          <div class="form-group">
+            <label for="car-speed">Tốc độ tối đa (km/h) *</label>
+            <input type="number" id="car-speed" step="0.1" min="1" placeholder="Ví dụ: 220" required>
+          </div>
+          <div class="form-group">
+            <label for="car-doors">Số cửa xe (numDoors) *</label>
+            <input type="number" id="car-doors" min="1" max="10" value="4" required>
+          </div>
+          <div class="form-group">
+            <label for="car-engine">Loại động cơ (engineType) *</label>
+            <select id="car-engine" required>
+              <option value="Petrol">Petrol (Xăng)</option>
+              <option value="Diesel">Diesel (Dầu)</option>
+              <option value="Electric">Electric (Điện - Giảm 20% thuế)</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
+          </div>
+          <div class="tax-preview-box">
+            <span>Thuế dự tính: (Base $500 + doors * $100, x0.8 nếu Electric)</span>
+            <strong id="preview-car-tax">$900.00</strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-car">Hủy</button>
+          <button type="submit" class="btn btn-car">Lưu Xe Hơi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Thêm Xe Tải (Truck) -->
+  <div class="modal-overlay" id="modal-truck">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>🚚 Thêm Xe Tải Mới (Add Truck)</h3>
+        <button class="modal-close-btn" data-close="modal-truck">&times;</button>
+      </div>
+      <form id="form-truck">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="truck-make">Hãng sản xuất (Make) *</label>
+            <input type="text" id="truck-make" placeholder="Ví dụ: Volvo, Isuzu, Hyundai..." required>
+          </div>
+          <div class="form-group">
+            <label for="truck-model">Dòng xe (Model) *</label>
+            <input type="text" id="truck-model" placeholder="Ví dụ: FH16, Giga, HD320..." required>
+          </div>
+          <div class="form-group">
+            <label for="truck-speed">Tốc độ tối đa (km/h) *</label>
+            <input type="number" id="truck-speed" step="0.1" min="1" placeholder="Ví dụ: 160" required>
+          </div>
+          <div class="form-group">
+            <label for="truck-payload">Tải trọng tối đa (Tấn) *</label>
+            <input type="number" id="truck-payload" step="0.1" min="0.1" placeholder="Ví dụ: 25.5" required>
+          </div>
+          <div class="form-group">
+            <label for="truck-axles">Số trục bánh xe (numAxles) *</label>
+            <input type="number" id="truck-axles" min="2" max="12" value="4" required>
+          </div>
+          <div class="tax-preview-box">
+            <span>Thuế dự tính: (Tải trọng * $150 + Số trục * $250)</span>
+            <strong id="preview-truck-tax">$4,825.00</strong>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-truck">Hủy</button>
+          <button type="submit" class="btn btn-truck">Lưu Xe Tải</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Xem Trước & Xuất Báo Cáo (output.txt) -->
+  <div class="modal-overlay" id="modal-report">
+    <div class="modal report-modal">
+      <div class="modal-header">
+        <h3>📄 Báo Cáo Nghĩa Vụ Thuế (output.txt)</h3>
+        <button class="modal-close-btn" data-close="modal-report">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px; font-size: 0.85rem; color: var(--text-muted);">
+          Nội dung dưới đây được định dạng chuẩn xác theo phương thức <code>exportResultsToFile()</code> từ C++:
+        </p>
+        <pre class="report-pre" id="report-content-preview"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-copy-report">Sao chép</button>
+        <button type="button" class="btn btn-success" id="btn-download-report">Tải về output.txt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container"></div>
+
+  <!-- Load Scripts theo thứ tự OOP -->
+  <script src="js/models/Vehicle.js"></script>
+  <script src="js/models/Car.js"></script>
+  <script src="js/models/Truck.js"></script>
+  <script src="js/controllers/VehicleManager.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

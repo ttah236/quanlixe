@@ -1,0 +1,6 @@
+Car,Toyota,Camry,220,4,Petrol
+Car,Tesla,Model 3,250,4,Electric
+Car,Porsche,911 Carrera,293,2,Petrol
+Truck,Volvo,FH16,160,25.5,4
+Truck,Isuzu,Giga,140,15,3
+Truck,Hyundai,HD320,130,19,4

@@ -1,0 +1,17 @@
+=============================================================
+             BÁO CÁO KẾT QUẢ QUẢN LÝ PHƯƠNG TIỆN             
+=============================================================
+
+--- 1. DANH SÁCH CHI TIẾT CÁC PHƯƠNG TIỆN ---
+1. [CAR]     Toyota              Camry             220       4 Cua             Petrol         $900
+2. [CAR]     Tesla               Model 3           250       4 Cua             Electric       $720
+3. [CAR]     Porsche             911 Carrera       293       2 Cua             Petrol         $700
+4. [TRUCK]   Volvo               FH16              160       25.5 Tan          4 Truc         $4825
+5. [TRUCK]   Isuzu               Giga              140       15 Tan            3 Truc         $3000
+6. [TRUCK]   Hyundai             HD320             130       19 Tan            4 Truc         $3850
+
+--- 2. TỔNG KẾT NGHĨA VỤ THUẾ (TOTAL TAX LIABILITY) ---
+Tổng số lượng phương tiện: 6 xe
+TỔNG NGHĨA VỤ THUẾ PHẢI NỘP: $13995
+
+=============================================================
